@@ -1,0 +1,75 @@
+import java.util.*;
+class Node {
+    int data;
+    Node left;
+    Node right;
+    Node(int x) {
+        this.data = x;
+        this.left = null;
+        this.right = null;
+    }
+}
+    public class Main {
+        public static void main(String[] args) {
+            Scanner sc = new Scanner(System.in);
+            List<Integer> trep = new ArrayList<>();
+            while(sc.hasNextInt()) {
+                trep.add(sc.nextInt());
+            }
+            Node root = BuildTree(trep);
+            List<Integer> res = leftview(root);
+            for(int i : res) {
+                System.out.print(i +  " ");
+            }
+        }
+        public static Node BuildTree(List<Integer> list) {
+            if(list.isEmpty() || list.get(0) == -1) {
+                return null; 
+            }
+            Node root = new Node(list.get(0));
+            Queue<Node> q = new LinkedList<>();
+            q.add(root);
+            int i = 1;
+            while(i < list.size()) {
+                Node temp = q.poll();
+                if(list.get(i) != -1) {
+                    temp.left = new Node(list.get(i));
+                    q.add(temp.left);
+                }
+                i++;
+                if(i >= list.size()) {
+                    break;
+                }
+                if(list.get(i) != -1) {
+                    temp.right = new Node(list.get(i));
+                    q.add(temp.right);
+                }
+                i++;
+            }
+            return root;
+        }
+        public static List<Integer> leftview(Node root) {
+            List<Integer> ls = new ArrayList<>();
+            if(root == null) {
+                return ls;
+            }
+            Queue<Node> q = new LinkedList<>();
+            q.add(root);
+            while(!q.isEmpty()) {
+                int s = q.size();
+                for(int i = 0 ; i < s ; i++) {
+                    Node temp = q.poll();
+                    if(i == 0) {
+                        ls.add(temp.data);
+                    }
+                    if(temp.left != null) {
+                        q.add(temp.left);
+                    }
+                    if(temp.right != null) {
+                        q.add(temp.right);
+                    }
+                }
+            }
+            return ls;
+        }
+    }
