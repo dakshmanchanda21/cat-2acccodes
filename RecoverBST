@@ -1,0 +1,109 @@
+import java.util.*;
+
+class Node {
+    int data;
+    Node left;
+    Node right;
+
+    Node(int x) {
+        this.data = x;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+public class Main {
+    private static Node first = null;
+    private static Node second = null;
+    private static Node prev = null;
+
+    public static void RecoverBST(Node root) {
+        inorderh(root);
+        if (first != null && second != null) {
+            int temp = first.data;
+            first.data = second.data;
+            second.data = temp;
+        }
+    }
+
+    public static void inorderh(Node root) {
+        if (root == null) {
+            return;
+        }
+        inorderh(root.left);
+        if (prev != null && prev.data > root.data) {
+            if (first == null) {
+                first = prev;
+            }
+            second = root;
+        }
+        prev = root;
+        inorderh(root.right);
+    }
+
+    public static Node BuildNode(List<Integer> list) {
+        if (list.isEmpty() || list.get(0) == -1) {
+            return null;
+        }
+        Node root = new Node(list.get(0));
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        int i = 1;
+        while (i < list.size()) {
+            Node temp = q.poll();
+            if (list.get(i) != -1) {
+                temp.left = new Node(list.get(i));
+                q.add(temp.left);
+            }
+            i++;
+            if (i >= list.size()) {
+                break;
+            }
+            if (list.get(i) != -1) {
+                temp.right = new Node(list.get(i));
+                q.add(temp.right);
+            }
+            i++;
+        }
+        return root;
+    }
+
+    public static void printLevelOrder(Node root) {
+        if (root == null) {
+            return;
+        }
+        Queue<Node> q = new LinkedList<>();
+        List<Integer> op = new ArrayList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            Node temp = q.poll();
+            if (temp != null) {
+                op.add(temp.data);
+                q.add(temp.left);
+                q.add(temp.right);
+            } else {
+                op.add(null); // Use null to represent missing nodes
+            }
+        }
+        // Remove trailing null values
+        int lastIndex = op.size() - 1;
+        while (lastIndex >= 0 && op.get(lastIndex) == null) {
+            lastIndex--;
+        }
+        for (int i = 0; i <= lastIndex; i++) {
+            System.out.print((op.get(i) != null ? op.get(i) : -1) + " ");
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        List<Integer> ls = new ArrayList<>();
+        while (sc.hasNextInt()) {
+            ls.add(sc.nextInt());
+        }
+        sc.close();
+        Node root = BuildNode(ls);
+        RecoverBST(root);
+        printLevelOrder(root);
+    }
+}
