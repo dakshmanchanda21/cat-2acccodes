@@ -1,0 +1,52 @@
+import java.util.*;
+class Solution {
+    public int[] bellmanFord(int V, List<List<Integer>> edges, int src) {
+        int[] dist = new int[V];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[src] = 0;
+        for (int i = 0; i < V - 1; i++) {
+            for (List<Integer> edge : edges) {
+                int u = edge.get(0);
+                int v = edge.get(1);
+                int w = edge.get(2);
+                if (dist[u] != Integer.MAX_VALUE && dist[u] + w < dist[v]) {
+                    dist[v] = dist[u] + w;
+                }
+            }
+        }
+        for (List<Integer> edge : edges) {
+            int u = edge.get(0);
+            int v = edge.get(1);
+            int w = edge.get(2);
+            if (dist[u] != Integer.MAX_VALUE && dist[u] + w < dist[v]) {
+                return new int[]{-1};
+            }
+        }
+        return dist;
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int V = sc.nextInt();
+        int E = sc.nextInt();
+        int src = sc.nextInt();
+
+        List<List<Integer>> edges = new ArrayList<>();
+
+        for (int i = 0; i < E; i++) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            int w = sc.nextInt();
+            edges.add(Arrays.asList(u, v, w));
+        }
+
+        Solution obj = new Solution();
+        int[] ans = obj.bellmanFord(V, edges, src);
+
+        for (int num : ans) {
+            System.out.print(num + " ");
+        }
+    }
+}
