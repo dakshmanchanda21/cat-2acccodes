@@ -5,7 +5,7 @@ class Solution {
         boolean[] visited = new boolean[V];
         List<Integer> res = new ArrayList<>();
         Queue<Integer> q = new LinkedList<>();
-        int s = 0;
+        int s = 0; // Assuming BFS starts from vertex 0
         visited[s] = true;
         q.add(s);
         res.add(s);
@@ -22,26 +22,25 @@ class Solution {
         return res;
     }
 }
-
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        
-        int V = sc.nextInt(); // Number of vertices
-        int E = sc.nextInt(); // Number of edges
-
         List<List<Integer>> adj = new ArrayList<>();
-        for (int i = 0; i < V; i++) {
-            adj.add(new ArrayList<>());
-        }
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) break;
 
-        for (int i = 0; i < E; i++) {
-            int u = sc.nextInt();
-            int v = sc.nextInt();
-            adj.get(u).add(v);
+            List<Integer> neighbors = new ArrayList<>();
+            Scanner lineScanner = new Scanner(line);
+            lineScanner.useDelimiter("[,\\[\\] ]+"); // Handles brackets and commas
+            while (lineScanner.hasNextInt()) {
+                neighbors.add(lineScanner.nextInt());
+            }
+            adj.add(neighbors);
         }
         Solution obj = new Solution();
         List<Integer> ans = obj.bfsOfGraph(adj);
+
         for (int num : ans) {
             System.out.print(num + " ");
         }
