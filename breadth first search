@@ -1,47 +1,51 @@
 import java.util.*;
-class Solution {
-    public static List<Integer> bfsOfGraph(List<List<Integer>> adj) {
-        int V = adj.size();
-        boolean[] visited = new boolean[V];
-        List<Integer> res = new ArrayList<>();
-        Queue<Integer> q = new LinkedList<>();
-        int s = 0; // Start BFS from node 0
-        visited[s] = true;
-        q.add(s);
-        res.add(s);
-        while (!q.isEmpty()) {
-            int curr = q.poll();
-            for (int v : adj.get(curr)) {
-                if (!visited[v]) {
-                    visited[v] = true;
-                    res.add(v);
-                    q.add(v);
-                }
-            }
-        }
-        return res;
-    }
-}
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        List<List<Integer>> adj = new ArrayList<>();
-        while (sc.hasNextLine()) {
-            String line = sc.nextLine().trim();
-            if (line.isEmpty()) break; // Stop on an empty line
-            List<Integer> neighbors = new ArrayList<>();
-            Scanner lineScanner = new Scanner(line); // Read each line separately
-
-            while (lineScanner.hasNextInt()) {
-                neighbors.add(lineScanner.nextInt());
-            }
-            adj.add(neighbors);
-        }
-        List<Integer> ans = Solution.bfsOfGraph(adj);
-        for (int num : ans) {
-            System.out.print(num + " ");
-        }
-    }
-}
+ class Solution {
+     public List<Integer> bfsOfGraph(List<List<Integer>> adj) {
+         int V = adj.size();
+         boolean[] visited = new boolean[V];
+         List<Integer> res = new ArrayList<>();
+         Queue<Integer> q = new LinkedList<>();
+         int s = 0;
+         visited[s] = true;
+         q.add(s);
+         res.add(s);
+         while (!q.isEmpty()) {
+             int curr = q.poll();
+             for (int v : adj.get(curr)) {
+                 if (!visited[v]) {
+                     visited[v] = true;
+                     res.add(v);
+                     q.add(v);
+                 }
+             }
+         }
+         return res;
+     }
+ }
+ 
+ public class Main {
+     public static void main(String[] args) {
+         Scanner sc = new Scanner(System.in);
+         
+         int V = sc.nextInt(); // Number of vertices
+         int E = sc.nextInt(); // Number of edges
+ 
+         List<List<Integer>> adj = new ArrayList<>();
+         for (int i = 0; i < V; i++) {
+             adj.add(new ArrayList<>());
+         }
+ 
+         for (int i = 0; i < E; i++) {
+             int u = sc.nextInt();
+             int v = sc.nextInt();
+             adj.get(u).add(v);
+         }
+         Solution obj = new Solution();
+         List<Integer> ans = obj.bfsOfGraph(adj);
+         for (int num : ans) {
+             System.out.print(num + " ");
+         }
+     }
+ }
 //first line means kitne nodes
 //second line means kitne connectors hai
